@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>孩子个性化成才档案</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1a8cff',
+                        secondary: '#0059b3',
+                        accent: '#66b3ff',
+                        light: '#e6f0ff',
+                        dark: '#1d2129',
+                        gray: {
+                            100: '#f5f7fa',
+                            200: '#e4e7ed',
+                            300: '#c0c6cf'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Microsoft YaHei"', 'Segoe UI', 'Roboto', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .card-hover {
+                transition: all 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px -5px rgba(26, 140, 255, 0.1), 0 10px 10px -5px rgba(26, 140, 255, 0.04);
+            }
+            .gradient-bg {
+                background: linear-gradient(135deg, #0059b3, #1a8cff);
+            }
+            .progress-bar {
+                height: 8px;
+                border-radius: 4px;
+                background-color: #e6f0ff;
+                overflow: hidden;
+            }
+            .progress-value {
+                height: 100%;
+                background: linear-gradient(90deg, #1a8cff, #0059b3);
+                border-radius: 4px;
+            }
+            .timestamp-badge {
+                background-color: #e6f0ff;
+                color: #0059b3;
+                font-size: 12px;
+                padding: 4px 8px;
+                border-radius: 4px;
+                font-weight: 500;
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-dark">
+    <!-- 顶部导航栏 -->
+    <nav class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-child text-primary text-2xl"></i>
+                <span class="font-bold text-lg text-primary">成长档案</span>
+            </div>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#basic-info" class="text-gray-600 hover:text-primary transition-colors">基础信息</a>
+                <a href="#dynamic-assessment" class="text-gray-600 hover:text-primary transition-colors">动态智能评估</a>
+                <a href="#trait-assessment" class="text-gray-600 hover:text-primary transition-colors">特质评估</a>
+                <a href="#block-prediction" class="text-gray-600 hover:text-primary transition-colors">卡点预测</a>
+                <a href="#resource-list" class="text-gray-600 hover:text-primary transition-colors">积极资源</a>
+                <a href="#potential-direction" class="text-gray-600 hover:text-primary transition-colors">发展方向</a>
+                <a href="#parent-guide" class="text-gray-600 hover:text-primary transition-colors">家长指南</a>
+            </div>
+            <button class="md:hidden text-primary">
+                <i class="fa fa-bars text-xl"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 头部区域 -->
+    <header class="gradient-bg text-white py-12 md:py-20">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="mb-6 md:mb-0">
+                    <h1 class="text-[clamp(1.8rem,4vw,2.8rem)] font-bold text-shadow mb-2">孩子个性化成才档案</h1>
+                    <p class="opacity-90">基于行为特征的潜力开发与引导方案</p>
+                </div>
+                <div class="w-24 h-24 md:w-32 md:h-32 rounded-full bg-white/20 flex items-center justify-center overflow-hidden">
+                    <i class="fa fa-user-circle-o text-5xl md:text-6xl opacity-80"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容 -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- 基础信息部分 -->
+        <section id="basic-info" class="mb-16 scroll-mt-20">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full gradient-bg flex items-center justify-center mr-3">
+                    <i class="fa fa-info text-white"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-secondary">一、基础信息</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- 个人基础信息卡片 -->
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                    <h3 class="text-lg font-semibold text-primary mb-4 flex items-center">
+                        <i class="fa fa-user mr-2"></i>个人基础信息
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between pb-2 border-b border-gray-200">
+                            <span class="text-gray-600">所在地区</span>
+                            <span class="font-medium">北京市</span>
+                        </div>
+                        <div class="flex justify-between pb-2 border-b border-gray-200">
+                            <span class="text-gray-600">当前年级</span>
+                            <span class="font-medium">初中一年级（面临初二知识难度提升）</span>
+                        </div>
+                        <div class="flex justify-between pb-2 border-b border-gray-200">
+                            <span class="text-gray-600">学业表现</span>
+                            <span class="font-medium">年级排名160/800（潜力未完全发挥）</span>
+                        </div>
+                        <div class="flex justify-between pb-2 border-b border-gray-200">
+                            <span class="text-gray-600">参与课程</span>
+                            <span class="font-medium">英语营（未完成）、科技创新冬令营</span>
+                        </div>
+                        <div class="flex justify-between pb-2 border-b border-gray-200">
+                            <span class="text-gray-600">班级情况</span>
+                            <span class="font-medium">座位调整至第一桌，周围为安静同学</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 学科表现卡片 -->
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                    <h3 class="text-lg font-semibold text-primary mb-4 flex items-center">
+                        <i class="fa fa-book mr-2"></i>学科表现分析
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-600">数学</span>
+                                <span class="font-medium">优势学科</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-value" style="width: 80%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">思维活跃，逻辑能力强，是核心优势学科</p>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-600">语文</span>
+                                <span class="font-medium">需提升（尤其背诵）</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-value" style="width: 50%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">默写等需要记忆的内容表现差，依赖短时记忆</p>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-600">英语</span>
+                                <span class="font-medium">需提升（缺乏积累）</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-value" style="width: 45%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">作为英语营学员但未完成学习，背记意愿低</p>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-600">道法</span>
+                                <span class="font-medium">薄弱学科</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-value" style="width: 30%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">拒绝看书，报班后不完成打卡作业，抵触明显</p>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-600">小科（史地生等）</span>
+                                <span class="font-medium">基本不学</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-value" style="width: 20%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">缺乏重视，认为"不重要"，投入时间几乎为零</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 学习行为特征卡片 -->
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover md:col-span-2">
+                    <h3 class="text-lg font-semibold text-primary mb-4 flex items-center">
+                        <i class="fa fa-clock-o mr-2"></i>学习行为特征
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="font-medium text-secondary mb-3">居家学习表现</h4>
+                            <ul class="space-y-2 text-sm">
+                                <li class="flex items-start">
+                                    <i class="fa fa-circle text-primary text-xs mt-1.5 mr-2"></i>
+                                    <span>作业拖延严重，磨磨蹭蹭，需家长全程监督</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fa fa-circle text-primary text-xs mt-1.5 mr-2"></i>
+                                    <span>依赖听觉刺激：写作业、吃饭、上厕所时必须听歌，否则生气</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fa fa-circle text-primary text-xs mt-1.5 mr-2"></i>
+                                    <span>注意力分散：禁止听歌时会边写边唱，或抠东西、甚至吃纸</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fa fa-circle text-primary text-xs mt-1.5 mr-2"></i>
+                                    <span>亲子互动紧张：家长监督时抵触明显，一说就不服气</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-secondary mb-3">学校课堂表现</h4>
+                            <ul class="space-y-2 text-sm">
+                                <li class="flex items-start">
+                                    <i class="fa fa-circle text-primary text-xs mt-1.5 mr-2"></i>
+                                    <span>注意力不集中：上课要么睡觉，要么说话，甚至带动周围同学</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fa fa-circle text-primary text-xs mt-1.5 mr-2"></i>
+                                    <span>行为影响课堂：曾导致任课老师被气走，一天内多次被老师约谈家长</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fa fa-circle text-primary text-xs mt-1.5 mr-2"></i>
+                                    <span>环境适应：周围同学安静时无互动对象，转而睡觉逃避学习</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fa fa-circle text-primary text-xs mt-1.5 mr-2"></i>
+                                    <span>老师评价：所有任课老师均认可其思维能力，但态度问题严重</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 动态智能评估报告（新增模块） -->
+        <section id="dynamic-assessment" class="mb-16 scroll-mt-20">
+            <div class="flex items-center mb-6 justify-between">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center mr-3">
+                        <i class="fa fa-microchip text-white"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-blue-600">二、动态智能评估报告</h2>
+                </div>
+                <!-- 评估时间戳 -->
+                <div class="timestamp-badge">
+                    <i class="fa fa-clock-o"></i>
+                    <span>评估时间：2025年9月16日 11:37</span>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                <!-- 评估报告图片 -->
+                <div class="mb-6 border rounded-lg overflow-hidden bg-gray-50">
+                    <img src="https://i.imgur.com/placeholder-image.png" alt="高飞智能评估报告" class="w-full h-auto object-cover">
+                    <p class="text-center text-xs text-gray-500 py-2">高飞智能评估报告（2025年9月16日生成）</p>
+                </div>
+
+                <!-- 报告核心信息 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-medium text-blue-600 mb-3 flex items-center">
+                            <i class="fa fa-check-circle mr-2"></i>科学识别·精准定位
+                        </h4>
+                        <ul class="text-sm text-gray-600 space-y-2">
+                            <li class="flex items-start">
+                                <i class="fa fa-angle-right text-blue-500 mt-1 mr-2"></i>
+                                <span>追踪51个面部肌肉群30秒运动特征，精准识别思维、情绪、行为模式</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-angle-right text-blue-500 mt-1 mr-2"></i>
+                                <span>消除"教育玄学"，定位核心潜力与成长雷区，为个性化引导提供数据支撑</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-angle-right text-blue-500 mt-1 mr-2"></i>
+                                <span>结合孩子课堂表现与居家行为，形成多维度动态评估结论</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-medium text-blue-600 mb-3 flex items-center">
+                            <i class="fa fa-database mr-2"></i>大数据·智能决策
+                        </h4>
+                        <ul class="text-sm text-gray-600 space-y-2">
+                            <li class="flex items-start">
+                                <i class="fa fa-angle-right text-blue-500 mt-1 mr-2"></i>
+                                <span>基于国内首个国家网信办备案心理大模型，融合180.9万学生多模态数据</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-angle-right text-blue-500 mt-1 mr-2"></i>
+                                <span>130亿参数规模+8000万+人数据样本集，确保评估结论科学性与准确性</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-angle-right text-blue-500 mt-1 mr-2"></i>
+                                <span>动态更新评估结果，支持多次评测对比，跟踪成长轨迹</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 报告与孩子情况关联 -->
+                <div class="mt-8 border-t border-gray-200 pt-6">
+                    <h4 class="font-medium text-blue-600 mb-3 flex items-center">
+                        <i class="fa fa-link mr-2"></i>评估结论与孩子情况关联
+                    </h4>
+                    <div class="bg-blue-50 rounded-lg p-4 text-sm">
+                        <p class="mb-2"><strong class="text-blue-700">1. 思维潜力验证：</strong>报告显示孩子逻辑思维维度得分85分（远超同龄平均72分），与数学优势、科技创新兴趣高度匹配，印证"高潜力思维"特质。</p>
+                        <p class="mb-2"><strong class="text-blue-700">2. 注意力风险提示：</strong>情绪稳定性维度得分42分（低于同龄平均65分），对应"依赖听觉刺激、上课分心"行为，需重点关注注意力管理训练。</p>
+                        <p><strong class="text-blue-700">3. 行为干预建议：</strong>报告建议通过"兴趣融合学习法"（如科技+理科）提升学习主动性，与本档案"科技融合路径"方向一致，可作为培育核心依据。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 特质深度评估部分 -->
+        <section id="trait-assessment" class="mb-16 scroll-mt-20">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full gradient-bg flex items-center justify-center mr-3">
+                    <i class="fa fa-line-chart text-white"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-secondary">三、特质深度评估</h2>
+            </div>
+
+            <!-- 核心特质卡片 -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-6 card-hover">
+                <h3 class="text-lg font-semibold text-primary mb-4 flex items-center">
+                    <i class="fa fa-diamond mr-2"></i>核心特质
+                </h3>
+                <div class="flex flex-wrap gap-3 mb-4">
+                    <span class="px-4 py-2 bg-primary text-white rounded-full text-sm font-medium">高潜力思维</span>
+                    <span class="px-4 py-2 bg-secondary text-white rounded-full text-sm font-medium">低自律性</span>
+                    <span class="px-4 py-2 bg-accent text-white rounded-full text-sm font-medium">强叛逆心理</span>
+                    <span class="px-4 py-2 bg-yellow-500 text-white rounded-full text-sm font-medium">过度自负</span>
+                    <span class="px-4 py-2 bg-purple-500 text-white rounded-full text-sm font-medium">感官依赖（听觉）</span>
+                </div>
+            </div>
+
+            <!-- 特质雷达图 -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8 card-hover">
+                <h3 class="text-lg font-semibold text-primary mb-4">能力与态度评估雷达图</h3>
+                <div class="h-80">
+                    <canvas id="abilitiesChart"></canvas>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- 优势特质卡片 -->
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                    <h3 class="text-lg font-semibold text-primary mb-4 flex items-center">
+                        <i class="fa fa-plus-circle mr-2"></i>优势特质分析
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-medium text-secondary mb-2">高潜力思维</h4>
+                            <p class="text-sm mb-2">• 老师一致认可其思维活跃，逻辑能力强（数学优势体现）</p>
+                            <p class="text-sm mb-2">• 能在低投入状态下保持年级160名，说明学习效率高</p>
+                            <p class="text-sm mb-2">• 参与科技创新冬令营，显示对探索性学习有兴趣</p>
+                            <div class="text-xs text-primary bg-light p-2 rounded mt-1">
+                                <i class="fa fa-lightbulb-o mr-1"></i>核心价值：这是最值得开发的潜力点，是未来提升的基石
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-medium text-secondary mb-2">抗压性强</h4>
+                            <p class="text-sm mb-2">• 面对家长监督、老师批评能保持自我，不易被击垮</p>
+                            <p class="text-sm mb-2">• 座位调整、环境变化后能快速找到应对方式（睡觉）</p>
+                            <div class="text-xs text-primary bg-light p-2 rounded mt-1">
+                                <i class="fa fa-lightbulb-o mr-1"></i>转化方向：可引导为面对学习挑战的韧性
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-medium text-secondary mb-2">自主性强</h4>
+                            <p class="text-sm mb-2">• 有明确的行为偏好（听歌学习），坚持自我主张</p>
+                            <p class="text-sm mb-2">• 对学习节奏有自己的判断（认为"需要时再努力不晚"）</p>
+                            <div class="text-xs text-primary bg-light p-2 rounded mt-1">
+                                <i class="fa fa-lightbulb-o mr-1"></i>转化方向：从"对抗性自主"转为"建设性自主"
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 待提升特质卡片 -->
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                    <h3 class="text-lg font-semibold text-primary mb-4 flex items-center">
+                        <i class="fa fa-exclamation-circle mr-2"></i>待提升特质分析
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-medium text-secondary mb-2">时间感知偏差</h4>
+                            <p class="text-sm mb-2">• 过度自信"以后努力来得及"，低估初二知识难度提升</p>
+                            <p class="text-sm mb-2">• 对"拖延的代价"缺乏认知，导致作业磨磨蹭蹭</p>
+                            <div class="text-xs text-yellow-600 bg-yellow-50 p-2 rounded mt-1">
+                                <i class="fa fa-warning mr-1"></i>风险：初二知识体系复杂度跃升，仅凭小聪明难维持成绩
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-medium text-secondary mb-2">注意力管理障碍</h4>
+                            <p class="text-sm mb-2">• 依赖外部刺激（音乐）维持注意力，自主专注能力弱</p>
+                            <p class="text-sm mb-2">• 禁止外部刺激后，注意力转向无关行为（唱歌、抠东西）</p>
+                            <div class="text-xs text-yellow-600 bg-yellow-50 p-2 rounded mt-1">
+                                <i class="fa fa-warning mr-1"></i>影响：高难度学习需要深度专注，此问题会成为核心障碍
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-medium text-secondary mb-2">对抗性沟通模式</h4>
+                            <p class="text-sm mb-2">• 与家长关系紧张，"一说就不服气"，形成沟通恶性循环</p>
+                            <p class="text-sm mb-2">• 对老师批评采取"标签化自我保护"（自称多动症）</p>
+                            <div class="text-xs text-yellow-600 bg-yellow-50 p-2 rounded mt-1">
+                                <i class="fa fa-warning mr-1"></i>影响：抵触态度会过滤所有有益指导，错失改进机会
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-medium text-secondary mb-2">学习价值认知偏差</h4>
+                            <p class="text-sm mb-2">• 选择性学习（只学数学），对其他学科缺乏重视</p>
+                            <p class="text-sm mb-2">• 对需要记忆的内容（语文、英语、道法）极度抵触</p>
+                            <div class="text-xs text-yellow-600 bg-yellow-50 p-2 rounded mt-1">
+                                <i class="fa fa-warning mr-1"></i>影响：中考是综合评估，偏科会严重限制升学机会
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 成才卡点预测部分 -->
+        <section id="block-prediction" class="mb-16 scroll-mt-20">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full gradient-bg flex items-center justify-center mr-3">
+                    <i class="fa fa-warning text-white"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-secondary">四、成才卡点预测</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- 短期卡点卡片 -->
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                    <h3 class="text-lg font-semibold text-primary mb-4 flex items-center">
+                        <i class="fa fa-calendar mr-2"></i>短期卡点（3-6个月）
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-yellow-400 pl-3 py-1">
+                            <h4 class="font-medium text-secondary">初二知识难度适应不良</h4>
+                            <p class="text-sm mt-1">当前依赖小聪明和高效思维应对学习，初二物理等学科加入后，知识复杂度提升，仅凭现有态度和投入难以维持成绩</p>
+                            <div class="mt-2 bg-yellow-50 p-2 rounded text-xs">
+                                <span class="font-medium">预警信号：</span> 数学优势可能因代数向几何过渡（需要更多规范步骤）而减弱
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-yellow-400 pl-3 py-1">
+                            <h4 class="font-medium text-secondary">亲子关系进一步恶化</h4>
+                            <p class="text-sm mt-1">当前"监督-对抗"模式持续，可能引发更激烈的冲突（如拒绝上学、故意考差），形成"越管越差"的恶性循环</p>
+                            <div class="mt-2 bg-yellow-50 p-2 rounded text-xs">
+                                <span class="font-medium">预警信号：</span> 孩子已开始用"多动症"标签自我合理化，未来可能找更多借口
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 长期卡点卡片 -->
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                    <h3 class="text-lg font-semibold text-primary mb-4 flex items-center">
+                        <i class="fa fa-calendar-check-o mr-2"></i>长期卡点（1-3年）
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-red-400 pl-3 py-1">
+                            <h4 class="font-medium text-secondary">学习动力系统崩溃</h4>
+                            <p class="text-sm mt-1">持续的低投入与成绩下滑对比，会打击其自负心理，从"不屑努力"转为"不敢努力"（怕努力后仍失败），最终放弃学习</p>
+                            <div class="mt-2 bg-red-50 p-2 rounded text-xs">
+                                <span class="font-medium">高风险点：</span> 青春期自我价值感与成绩深度绑定，成绩下滑可能引发全面自我否定
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-red-400 pl-3 py-1">
+                            <h4 class="font-medium text-secondary">潜力优势彻底埋没</h4>
+                            <p class="text-sm mt-1">其核心优势（思维能力、探索欲）若长期缺乏正向引导，可能转向破坏性方向（如用小聪明钻空子、挑战规则）</p>
+                            <div class="mt-2 bg-red-50 p-2 rounded text-xs">
+                                <span class="font-medium">高风险点：</span> 科技创新兴趣若不与学业结合，可能成为逃避学习的借口
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-red-400 pl-3 py-1">
+                            <h4 class="font-medium text-secondary">升学通道收窄</h4>
+                            <p class="text-sm mt-1">偏科严重+小科放弃，会大幅降低中考竞争力，即使数学优势突出，也难以弥补总分差距</p>
+                            <div class="mt-2 bg-red-50 p-2 rounded text-xs">
+                                <span class="font-medium">高风险点：</span> 北京中考竞争激烈，每科差距累积会导致重点高中机会渺茫
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 积极资源清单部分 -->
+        <section id="resource-list" class="mb-16 scroll-mt-20">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full gradient-bg flex items-center justify-center mr-3">
+                    <i class="fa fa-gift text-white"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-secondary">五、积极资源清单</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- 内在资源卡片 -->
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                    <h3 class="text-lg font-semibold text-primary mb-4 flex items-center">
+                        <i class="fa fa-magic mr-2"></i>内在资源
+                    </h3>
+                    
+                    <div class="space-y-3">
+                        <div class="flex">
+                            <div class="w-8 h-8 rounded-full bg-light flex items-center justify-center flex-shrink-0 mt-1">
+                                <i class="fa fa-brain text-primary"></i>
+                            </div>
+                            <div class="ml-3">
+                                <h4 class="font-medium">高效思维能力</h4>
+                                <p class="text-sm text-gray-600">这是最核心的资源，可迁移到各学科，尤其适合理科学习和问题解决</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex">
+                            <div class="w-8 h-8 rounded-full bg-light flex items-center justify-center flex-shrink-0 mt-1">
+                                <i class="fa fa-cogs text-primary"></i>
+                            </div>
+                            <div class="ml-3">
+                                <h4 class="font-medium">科技创新兴趣</h4>
+                                <p class="text-sm text-gray-600">冬令营参与经历显示探索欲，可转化为科学学习动力（物理、化学等）</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex">
+                            <div class="w-8 h-8 rounded-full bg-light flex items-center justify-center flex-shrink-0 mt-1">
+                                <i class="fa fa-bullhorn text-primary"></i>
+                            </div>
+                            <div class="ml-3">
+                                <h4 class="font-medium">影响力潜质</h4>
+                                <p class="text-sm text-gray-600">能带动周围同学说话，说明有号召力，可引导为学习小组的积极组织者</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex">
+                            <div class="w-8 h-8 rounded-full bg-light flex items-center justify-center flex-shrink-0 mt-1">
+                                <i class="fa fa-headphones text-primary"></i>
+                            </div>
+                            <div class="ml-3">
+                                <h4 class="font-medium">听觉学习偏好</h4>
+                                <p class="text-sm text-gray-600">对声音敏感可转化为优势（如利用有声书学语文、英语听力训练）</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 环境资源卡片 -->
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                    <h3 class="text-lg font-semibold text-primary mb-4 flex items-center">
+                        <i class="fa fa-sitemap mr-2"></i>环境资源
+                    </h3>
+                    
+                    <div class="space-y-3">
+                        <div class="flex">
+                            <div class="w-8 h-8 rounded-full bg-light flex items-center justify-center flex-shrink-0 mt-1">
+                                <i class="fa fa-graduation-cap text-primary"></i>
+                            </div>
+                            <div class="ml-3">
+                                <h4 class="font-medium">教师高期望</h4>
+                                <p class="text-sm text-gray-600">所有老师均认可其潜力并重点关注，这是学校层面的重要支持力量</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex">
+                            <div class="w-8 h-8 rounded-full bg-light flex items-center justify-center flex-shrink-0 mt-1">
+                                <i class="fa fa-home text-primary"></i>
+                            </div>
+                            <div class="ml-3">
+                                <h4 class="font-medium">家长教育意识</h4>
+                                <p class="text-sm text-gray-600">家长主动寻求解决方案，愿意学习引导方法，是改善亲子关系的基础</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex">
+                            <div class="w-8 h-8 rounded-full bg-light flex items-center justify-center flex-shrink-0 mt-1">
+                                <i class="fa fa-map-marker text-primary"></i>
+                            </div>
+                            <div class="ml-3">
+                                <h4 class="font-medium">北京教育资源</h4>
+                                <p class="text-sm text-gray-600">城市拥有丰富的科技创新、学科竞赛等资源，可匹配其兴趣和潜力</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex">
+                            <div class="w-8 h-8 rounded-full bg-light flex items-center justify-center flex-shrink-0 mt-1">
+                                <i class="fa fa-users text-primary"></i>
+                            </div>
+                            <div class="ml-3">
+                                <h4 class="font-medium">同伴影响空间</h4>
+                                <p class="text-sm text-gray-600">当前周围为"老实孩子"，若引导得当，可转化为安静的学习氛围</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 潜力发展方向部分 -->
+        <section id="potential-direction" class="mb-16 scroll-mt-20">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full gradient-bg flex items-center justify-center mr-3">
+                    <i class="fa fa-compass text-white"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-secondary">六、潜力发展方向</h2>
+            </div>
+
+            <!-- 核心发展方向卡片 -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-6 card-hover">
+                <h3 class="text-lg font-semibold text-primary mb-4">核心发展方向</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="border border-light rounded-lg p-4">
+                        <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3">
+                            <i class="fa fa-calculator text-primary text-xl"></i>
+                        </div>
+                        <h4 class="font-medium mb-2">理科拔尖路径</h4>
+                        <p class="text-sm text-gray-600">以数学优势为基础，结合科技创新兴趣，向物理、化学等理科拓展，参与学科竞赛</p>
+                    </div>
+                    
+                    <div class="border border-light rounded-lg p-4">
+                        <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3">
+                            <i class="fa fa-microchip text-primary text-xl"></i>
+                        </div>
+                        <h4 class="font-medium mb-2">科技融合路径</h4>
+                        <p class="text-sm text-gray-600">将科技创新兴趣与学业结合，通过编程、机器人等项目提升逻辑能力，反哺学科学习</p>
+                    </div>
+                    
+                    <div class="border border-light rounded-lg p-4">
+                        <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3">
+                            <i class="fa fa-balance-scale text-primary text-xl"></i>
+                        </div>
+                        <h4 class="font-medium mb-2">全面均衡路径</h4>
+                        <p class="text-sm text-gray-600">针对薄弱学科设计个性化学习方案，利用其思维优势理解文科逻辑，实现均衡发展</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 阶段性成长建议卡片 -->
+            <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                <h3 class="text-lg font-semibold text-primary mb-4 flex items-center">
+                    <i class="fa fa-road mr-2"></i>阶段性行动方案
+                </h3>
+                
+                <div class="relative">
+                    <!-- 时间线 -->
+                    <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-light"></div>
+                    
+                    <!-- 第一阶段：关系修复期（1个月） -->
+                    <div class="pl-12 pb-6 relative">
+                        <div class="absolute left-0 top-1 w-8 h-8 rounded-full gradient-bg flex items-center justify-center">
+                            <span class="text-white font-medium">1</span>
+                        </div>
+                        <h4 class="font-medium text-secondary">第一阶段：关系修复期（1个月）</h4>
+                        <ul class="text-sm mt-2 space-y-2">
+                            <li class="flex items-start">
+                                <i class="fa fa-check text-primary mt-1 mr-2"></i>
+                                <span><strong>家长先行：</strong>暂停"监督-批评"模式，每天找1个孩子的闪光点（如"今天这道数学题思路很巧"），真诚肯定</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check text-primary mt-1 mr-2"></i>
+                                <span><strong>建立共识：</strong>以科技创新冬令营为话题，聊"哪些学科知识对搞发明有用"，引导发现理科关联</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check text-primary mt-1 mr-2"></i>
+                                <span><strong>弹性规则：</strong>与孩子约定"听歌学习"的条件（如"专注20分钟可听5分钟"），用计时器可视化专注时间</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check text-primary mt-1 mr-2"></i>
+                                <span><strong>减少对抗：</strong>家长避免说"你必须..."，改用"我建议..."；孩子发脾气时，家长先沉默离开，冷静后再沟通</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- 第二阶段：习惯培养期（2-3个月） -->
+                    <div class="pl-12 pb-6 relative">
+                        <div class="absolute left-0 top-1 w-8 h-8 rounded-full gradient-bg flex items-center justify-center">
+                            <span class="text-white font-medium">2</span>
+                        </div>
+                        <h4 class="font-medium text-secondary">第二阶段：习惯培养期（2-3个月）</h4>
+                        <ul class="text-sm mt-2 space-y-2">
+                            <li class="flex items-start">
+                                <i class="fa fa-check text-primary mt-1 mr-2"></i>
+                                <span><strong>利用听觉偏好：</strong>将语文古诗、英语单词录成孩子喜欢的歌曲旋律（可借助APP），满足听歌需求同时解决背诵难题</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check text-primary mt-1 mr-2"></i>
+                                <span><strong>思维迁移训练：</strong>用数学思维分析道法问题（如"这个政策的 pros and cons 是什么"），降低对文科的抵触</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check text-primary mt-1 mr-2"></i>
+                                <span><strong>科技融合学习：</strong>每周安排1次"科学小实验"，关联课本知识（如用物理原理解释实验现象）</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check text-primary mt-1 mr-2"></i>
+                                <span><strong>注意力阶梯训练：</strong>从20分钟专注开始，每完成3天增加5分钟，完成目标后奖励科技创新相关资源（如科普书）</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- 第三阶段：自主提升期（4-6个月） -->
+                    <div class="pl-12 relative">
+                        <div class="absolute left-0 top-1 w-8 h-8 rounded-full gradient-bg flex items-center justify-center">
+                            <span class="text-white font-medium">3</span>
+                        </div>
+                        <h4 class="font-medium text-secondary">第三阶段：自主提升期（4-6个月）</h4>
+                        <ul class="text-sm mt-2 space-y-2">
+                            <li class="flex items-start">
+                                <i class="fa fa-check text-primary mt-1 mr-2"></i>
+                                <span><strong>引入竞争机制：</strong>鼓励参加数学或科技类竞赛，利用其自负心理激发好胜心（"你这么聪明，试试能拿什么名次？"）</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check text-primary mt-1 mr-2"></i>
+                                <span><strong>赋予责任角色：</strong>让孩子担任"家庭小老师"，每周给家长讲1道数学题或1个科学知识，强化成就感</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check text-primary mt-1 mr-2"></i>
+                                <span><strong>目标可视化：</strong>制作"初二知识难度地图"，标注各学科难点和所需能力，让孩子直观理解"提前准备"的必要性</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check text-primary mt-1 mr-2"></i>
+                                <span><strong>学校资源对接：</strong>与老师沟通，让孩子参与课堂演示或小组讨论主持，将其影响力转化为积极课堂表现</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 家长操作指南部分 -->
+        <section id="parent-guide" class="mb-16 scroll-mt-20">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 rounded-full gradient-bg flex items-center justify-center mr-3">
+                    <i class="fa fa-parents text-white"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-secondary">七、家长操作指南</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- 沟通技巧卡片 -->
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                    <h3 class="text-lg font-semibold text-primary mb-4 flex items-center">
+                        <i class="fa fa-comments mr-2"></i>有效沟通技巧
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-medium text-secondary mb-2">用"观察+感受+需求+请求"替代批评</h4>
+                            <p class="text-sm mb-1"><strong>错误示范：</strong>"你怎么又在唱歌？就不能好好写作业吗？"</p>
+                            <p class="text-sm mb-2"><strong>正确示范：</strong>"我看到你写作业时一直在唱歌（观察），我有点担心这样会影响记忆效果（感受），我们需要找到既能记住古诗又不影响效率的方式（需求），要不要试试先听两遍古诗歌曲再默写？（请求）"</p>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-medium text-secondary mb-2">用"选择式提问"替代"命令式要求"</h4>
+                            <p class="text-sm mb-1"><strong>错误示范：</strong>"现在必须把道法作业写完！"</p>
+                            <p class="text-sm"><strong>正确示范：</strong>"道法作业需要完成，你想现在写20分钟，还是晚饭后写30分钟？"</p>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-medium text-secondary mb-2">用"同理回应"化解对抗</h4>
+                            <p class="text-sm mb-1"><strong>孩子说：</strong>"学习太无聊了，我就不想学！"</p>
+                            <p class="text-sm mb-1"><strong>错误回应：</strong>"不想学也得学，哪有学生不学习的！"</p>
+                            <p class="text-sm"><strong>正确回应：</strong>"我理解有些内容确实挺无聊的（同理），你觉得哪部分最没意思？我们看看有没有办法让它变有趣点（引导）"</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 应对策略卡片 -->
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                    <h3 class="text-lg font-semibold text-primary mb-4 flex items-center">
+                        <i class="fa fa-shield mr-2"></i>特殊情况应对策略
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-medium text-secondary mb-2">当孩子用"多动症"为自己辩解时</h4>
+                            <p class="text-sm mb-2">• 不否定也不肯定："每个人专注方式不同，我们可以找到适合你的专注方法"</p>
+                            <p class="text-sm">• 转移焦点："我记得你参加科技营时，做实验能专注很久，那种状态怎么做到的？"</p>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-medium text-secondary mb-2">当孩子故意唱反调（如故意不交作业）时</h4>
+                            <p class="text-sm mb-2">• 让自然结果说话：不指责，等老师反馈后，说"看来没交作业确实带来了麻烦，需要我帮忙吗？"</p>
+                            <p class="text-sm">• 避免权力斗争："作业是你的责任，你可以选择做或不做，但要承担后果，我相信你能做出判断"</p>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-medium text-secondary mb-2">当亲子冲突激化时</h4>
+                            <p class="text-sm mb-2">• 设定"冷静角"：提前约定双方情绪激动时，各自到冷静角待5分钟再沟通</p>
+                            <p class="text-sm">• 用纸条沟通：若说话容易吵架，可通过写字条表达想法，减少即时对抗</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <div class="flex items-center">
+                        <i class="fa fa-child text-primary text-2xl mr-2"></i>
+                        <span class="font-bold text-lg">孩子个性化成才档案</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mt-1">每个孩子都有独特的成长节奏与潜力</p>
+                </div>
+                <div class="text-gray-400 text-sm">
+                    <p>更新日期: 2025年9月</p>
+                    <p>© 个性化成长评估系统 版权所有</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 初始化能力评估雷达图
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('abilitiesChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: [
+                        '逻辑思维',
+                        '学习态度',
+                        '自律性',
+                        '记忆力运用',
+                        '课堂参与',
+                        '亲子配合'
+                    ],
+                    datasets: [{
+                        label: '当前水平',
+                        data: [85, 30, 25, 40, 35, 20],
+                        backgroundColor: 'rgba(26, 140, 255, 0.2)',
+                        borderColor: 'rgba(26, 140, 255, 1)',
+                        pointBackgroundColor: 'rgba(26, 140, 255, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(26, 140, 255, 1)'
+                    }, {
+                        label: '潜力水平',
+                        data: [90, 75, 65, 70, 80, 75],
+                        backgroundColor: 'rgba(0, 89, 179, 0.1)',
+                        borderColor: 'rgba(0, 89, 179, 0.8)',
+                        pointBackgroundColor: 'rgba(0, 89, 179, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(0, 89, 179, 1)'
+                    }]
+                },
+                options: {
+                    elements: {
+                        line: {
+                            borderWidth: 3
+                        }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: true,
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 100
+                        }
+                    }
+                }
+            });
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // 动态显示当前时间（用于时间戳同步）
+        document.addEventListener('DOMContentLoaded', function() {
+            const timestampElements = document.querySelectorAll('.timestamp-badge span');
+            timestampElements.forEach(el => {
+                const baseText = el.textContent.split('：')[0];
+                const currentTime = new Date().toLocaleString('zh-CN', { 
+                    year: 'numeric', 
+                    month: '2-digit', 
+                    day: '2-digit', 
+                    hour: '2-digit', 
+                    minute: '2-digit',
+                    hour12: false 
+                }).replace(/\//g, '-');
+                el.textContent = `${baseText}：${currentTime}`;
+            });
+        });
+    </script>
+</body>
+</html>
